@@ -1,5 +1,6 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.2'
+	//id "com.google.osdetector" version "1.6.0"
 }
 
 ext {
@@ -121,6 +122,7 @@ subprojects {
             doFirst {
                 options.compilerArgs = [
                     '--module-path', classpath.asPath,
+					'--add-modules', 'javafx.controls'
                 ]
                 classpath = files()
             }
@@ -131,7 +133,7 @@ subprojects {
             doFirst {
                 options.compilerArgs = [
                     '--module-path', classpath.asPath,
-                    '--add-modules', 'junit',
+                    '--add-modules', 'junit,javafx.controls',
                     '--add-reads', "$moduleName=junit",
                     '--patch-module', "$moduleName=" + files(sourceSets.test.java.srcDirs).asPath,
                 ]
@@ -168,6 +170,9 @@ project(':jfxtras-common') {
     project.ext.apiProject = true
     project.moduleName = 'jfxtras.common'
     dependencies {
+		compile "org.openjfx:javafx-base:11:$platform"
+		compile "org.openjfx:javafx-graphics:11:$platform"
+		compile "org.openjfx:javafx-controls:11:$platform"
         testCompile project(':jfxtras-test-support')
     }
 }
